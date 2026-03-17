@@ -53,25 +53,6 @@ document.addEventListener('keydown', e => {
 // ── Copy + redirect to Metro Bilbao ──────────────────────────
 const METRO_URL = 'https://www.metrobilbao.eus/es/oficina-virtual';
 
-function copyToClipboard(text) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    return navigator.clipboard.writeText(text);
-  }
-  // Fallback for Safari
-  return new Promise((resolve, reject) => {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    try {
-      document.execCommand('copy') ? resolve() : reject();
-    } catch (e) { reject(e); }
-    document.body.removeChild(ta);
-  });
-}
-
 function copyAndGoMetro() {
   const lang = localStorage.getItem('lang') || 'es';
   const el = document.querySelector('#metro .suggestion-text .lang-' + lang);
@@ -79,23 +60,33 @@ function copyAndGoMetro() {
   const btn = document.getElementById('metroBtn');
   const feedback = document.getElementById('metroFeedback');
 
-  copyToClipboard(text).then(() => {
-    btn.disabled = true;
-    const msgs = {
-      es: ['✓ Texto copiado — te llevamos a la oficina virtual del Metro en 3…', '…2…', '…1…'],
-      eu: ['✓ Testua kopiatuta — Metroren bulego birtualera eramaten zaitugu 3…', '…2…', '…1…']
-    };
-    const steps = msgs[lang];
-    feedback.textContent = steps[0];
-    let i = 1;
-    const interval = setInterval(() => {
-      if (i < steps.length) { feedback.textContent = steps[i++]; }
-      else { clearInterval(interval); window.open(METRO_URL, '_blank', 'noopener'); btn.disabled = false; feedback.textContent = ''; }
-    }, 1000);
-  }).catch(() => {
-    // If copy fails, just redirect
-    window.open(METRO_URL, '_blank', 'noopener');
-  });
+  // Synchronous copy — works in Safari (must happen directly in click handler)
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;font-size:16px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+
+  // Also try async API for modern browsers (won't block if it fails)
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+
+  btn.disabled = true;
+  const msgs = {
+    es: ['✓ Texto copiado — te llevamos a la oficina virtual del Metro en 3…', '…2…', '…1…'],
+    eu: ['✓ Testua kopiatuta — Metroren bulego birtualera eramaten zaitugu 3…', '…2…', '…1…']
+  };
+  const steps = msgs[lang];
+  feedback.textContent = steps[0];
+  let i = 1;
+  const interval = setInterval(() => {
+    if (i < steps.length) { feedback.textContent = steps[i++]; }
+    else { clearInterval(interval); window.open(METRO_URL, '_blank', 'noopener'); btn.disabled = false; feedback.textContent = ''; }
+  }, 1000);
 }
 
 // ── Submit to Formspree + Ayuntamiento ───────────────────────
