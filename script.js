@@ -57,10 +57,7 @@ function copyAndGoMetro() {
   const lang = localStorage.getItem('lang') || 'es';
   const el = document.querySelector('#metro .suggestion-text .lang-' + lang);
   const text = el ? el.textContent.trim() : '';
-  const btn = document.getElementById('metroBtn');
-  const feedback = document.getElementById('metroFeedback');
 
-  // Synchronous copy — works in Safari (must happen directly in click handler)
   const ta = document.createElement('textarea');
   ta.value = text;
   ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;font-size:16px';
@@ -70,23 +67,7 @@ function copyAndGoMetro() {
   try { document.execCommand('copy'); } catch (e) {}
   document.body.removeChild(ta);
 
-  // Also try async API for modern browsers (won't block if it fails)
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).catch(() => {});
-  }
-
-  btn.disabled = true;
-  const msgs = {
-    es: ['✓ Texto copiado — te llevamos a la oficina virtual del Metro en 3…', '…2…', '…1…'],
-    eu: ['✓ Testua kopiatuta — Metroren bulego birtualera eramaten zaitugu 3…', '…2…', '…1…']
-  };
-  const steps = msgs[lang];
-  feedback.textContent = steps[0];
-  let i = 1;
-  const interval = setInterval(() => {
-    if (i < steps.length) { feedback.textContent = steps[i++]; }
-    else { clearInterval(interval); window.open(METRO_URL, '_blank', 'noopener'); btn.disabled = false; feedback.textContent = ''; }
-  }, 1000);
+  window.open(METRO_URL, '_blank', 'noopener');
 }
 
 // ── Submit to Formspree + Ayuntamiento ───────────────────────
