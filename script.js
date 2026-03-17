@@ -53,7 +53,7 @@ document.addEventListener('keydown', e => {
 // ── Copy + redirect to Metro Bilbao ──────────────────────────
 const METRO_URL = 'https://www.metrobilbao.eus/es/oficina-virtual';
 
-function copyAndGoMetro() {
+function copyTextMetro() {
   const lang = localStorage.getItem('lang') || 'es';
   const el = document.querySelector('#metro .suggestion-text .lang-' + lang);
   const text = el ? el.textContent.trim() : '';
@@ -66,8 +66,6 @@ function copyAndGoMetro() {
   ta.select();
   try { document.execCommand('copy'); } catch (e) {}
   document.body.removeChild(ta);
-
-  window.open(METRO_URL, '_blank', 'noopener');
 }
 
 // ── Submit to Formspree + Ayuntamiento ───────────────────────
