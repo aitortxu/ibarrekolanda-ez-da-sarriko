@@ -50,6 +50,32 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
 });
 
+// ── Copy + redirect to Metro Bilbao ──────────────────────────
+const METRO_URL = 'https://www.metrobilbao.eus/es/oficina-virtual';
+
+function copyAndGoMetro() {
+  const lang = localStorage.getItem('lang') || 'es';
+  const el = document.querySelector('#metro .suggestion-text .lang-' + lang);
+  const text = el ? el.textContent.trim() : '';
+  const btn = document.getElementById('metroBtn');
+  const feedback = document.getElementById('metroFeedback');
+
+  navigator.clipboard.writeText(text).then(() => {
+    btn.disabled = true;
+    const msgs = {
+      es: ['✓ Texto copiado — te llevamos a la oficina virtual del Metro en 3…', '…2…', '…1…'],
+      eu: ['✓ Testua kopiatuta — Metroren bulego birtualera eramaten zaitugu 3…', '…2…', '…1…']
+    };
+    const steps = msgs[lang];
+    feedback.textContent = steps[0];
+    let i = 1;
+    const interval = setInterval(() => {
+      if (i < steps.length) { feedback.textContent = steps[i++]; }
+      else { clearInterval(interval); window.open(METRO_URL, '_blank', 'noopener'); btn.disabled = false; feedback.textContent = ''; }
+    }, 1000);
+  });
+}
+
 // ── Submit to Formspree + Ayuntamiento ───────────────────────
 const FORMSPREE = 'https://formspree.io/f/xeerrdkp';
 const AYTO_POST = 'https://www.bilbao.eus/cs/Bilbaonet/jsp/Formularios/BIO_TuAyuntaTeEscucha.jsp?language=es';

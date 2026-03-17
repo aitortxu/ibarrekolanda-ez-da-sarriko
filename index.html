@@ -38,9 +38,9 @@
         <span data-es>Un error histórico que borra la identidad de un barrio con siglos de historia.</span>
         <span data-eu>Akats historiko batek mendeetako auzo baten identitatea ezabatzen du.</span>
       </p>
-      <a href="#ayto" class="btn btn-primary">
-        <span data-es>Apoya el cambio</span>
-        <span data-eu>Lagundu aldaketa</span>
+      <a href="#metro" class="btn btn-secondary">
+        <span data-es>¡Pídeselo al Metro!</span>
+        <span data-eu>¡Eskatu Metrori!</span>
       </a>
     </div>
   </section>
@@ -210,6 +210,28 @@
           <span data-es>Exigimos a <strong>Metro Bilbao</strong> y al <strong>Ayuntamiento de Bilbao</strong> que la estación de metro actualmente denominada <em>"Sarriko"</em> pase a denominarse <strong>"Ibarrekolanda"</strong>, recuperando el nombre histórico del barrio al que da servicio.</span>
           <span data-eu><strong>Metro Bilbaori</strong> eta <strong>Bilboko Udalari</strong> eskatzen diegu gaur egun <em>"Sarriko"</em> izeneko metro geltokia <strong>"Ibarrekolanda"</strong> izena har dezan, zerbitzatzen duen auzoaren izen historikoa berreskuratuz.</span>
         </p>
+      </div>
+
+      <div class="metro-block" id="metro">
+        <h3 class="form-title">
+          <span data-es>Escríbele al Metro Bilbao</span>
+          <span data-eu>Idatzi Metro Bilbaori</span>
+        </h3>
+        <p class="form-desc">
+          <span data-es>Copia el texto y pégalo en la oficina virtual de Metro Bilbao. Al pulsar el botón te avisamos antes de redirigirte.</span>
+          <span data-eu>Kopiatu testua eta itsatsi Metro Bilbaoko bulego birtualean. Botoian sakatzean birbideratzen zaitugu aurretik jakinarazita.</span>
+        </p>
+        <div class="suggestion-text">
+          <p class="lang-es">Solicito que la estación de metro "Sarriko" pase a denominarse "Ibarrekolanda", que es el nombre histórico del barrio al que da servicio. El parque Sarriko es solo una parte del barrio; utilizar su nombre para toda la estación borra la identidad histórica de Ibarrekolanda, documentada desde el siglo XVIII. Me gustaría que Metro Bilbao corrigiera este error y recuperara el nombre del barrio.</p>
+          <p class="lang-eu">"Sarriko" metro geltokia "Ibarrekolanda" izena har dezan eskatzen dut, hori baita zerbitzatzen duen auzoaren izen historikoa. Sarriko parkea auzoaren zati bat besterik ez da; bere izena geltoki osorako erabiltzeak Ibarrekolandaren XVIII. mendetik dokumentatutako identitate historikoa ezabatzen du. Metro Bilbaok akats hau zuzendu eta auzoaren izena berreskuratu dezala gustatuko litzaidake.</p>
+        </div>
+        <div style="margin-top:1.25rem;">
+          <button class="btn btn-primary" id="metroBtn" onclick="copyAndGoMetro()">
+            <span data-es>Copiar texto e ir a la oficina virtual del Metro</span>
+            <span data-eu>Testua kopiatu eta Metroren bulego birtualera joan</span>
+          </button>
+        </div>
+        <p class="copy-feedback" id="metroFeedback" aria-live="polite"></p>
       </div>
 
     </div>
